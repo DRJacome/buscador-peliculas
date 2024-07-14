@@ -3,11 +3,11 @@ INSTALAR:
 npm i just-debounce-it -E
 */
 
-import "./App.css";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useMovies } from "./hooks/useMovies";
 import { Movies } from "./components/Movies";
-import { useEffect, useState, useRef, useCallback } from "react";
 import debounce from "just-debounce-it";
+import "./App.css";
 
 function useSearch() {
     const [search, updateSearch] = useState("");

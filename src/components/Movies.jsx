@@ -1,3 +1,5 @@
+import React from "react";
+
 function ListOfMovies({ movies }) {
     return (
         <ul className='movies'>
