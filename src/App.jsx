@@ -93,12 +93,15 @@ function App() {
                         placeholder='Avengers, Star Wars, Matrix...'
                         size={22}
                     />
-                    <input
-                        type='checkbox'
-                        onChange={handleSort}
-                        checked={sort}
-                    />
                     <button type='submit'>Buscar</button>
+                    <div className='sorter'>
+                        <input
+                            type='checkbox'
+                            onChange={handleSort}
+                            checked={sort}
+                        />
+                        <span>Ordenar por título</span>
+                    </div>
                 </form>
                 {error && <p style={{ color: "red" }}>{error}</p>}
             </header>
@@ -106,10 +109,7 @@ function App() {
                 {loading ? (
                     <p>Cargando...</p>
                 ) : (
-                    <Movies
-                        movies={movies}
-                        hasSearched={hasSearched}
-                    />
+                    <Movies movies={movies} hasSearched={hasSearched} />
                 )}
             </main>
         </div>

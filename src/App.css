@@ -5,12 +5,13 @@
     align-items: center;
     text-align: center;
     width: 100%;
-
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .searcher {
     margin: 0 0 3% 0;
+    width: 100%;
 }
 
 main {
@@ -23,6 +24,16 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+form input[type="text"],
+form button {
+    margin: 0 8px;
+}
+.sorter {
+    display: flex;
+    position: absolute;
+    right: 0;
 }
 
 .movies {
@@ -51,4 +62,21 @@ form {
     border-radius: 8px;
     margin-top: 16px;
     max-width: 100%;
+}
+
+/* MÓVVIL */
+
+@media (max-width: 768px) {
+    .form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form button {
+        margin-top: 16px;
+    } 
+    .sorter {
+        position: static;
+        margin-top: 16px;
+    }
 }
