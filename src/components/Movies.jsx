@@ -14,12 +14,20 @@ function ListOfMovies({ movies }) {
     );
 }
 
-function NoMoviesResult() {
-    return <p>No se han encontrado películas para esta búsqueda.</p>;
+function NoMoviesResult({ hasSearched }) {
+    if (!hasSearched) {
+        return <p>Escribe una o más palabras para hacer una búsqueda.</p>;
+    } else {
+        return <p>No se han encontrado películas para esta búsqueda.</p>;
+    }
 }
 
-export function Movies({ movies }) {
+export function Movies({ movies, hasSearched }) {
     const hasMovies = movies?.length > 0;
 
-    return hasMovies ? <ListOfMovies movies={movies} /> : <NoMoviesResult />;
+    return hasMovies ? (
+        <ListOfMovies movies={movies} />
+    ) : (
+        <NoMoviesResult hasSearched={hasSearched} />
+    );
 }

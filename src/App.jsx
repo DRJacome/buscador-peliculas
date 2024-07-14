@@ -1,6 +1,7 @@
 /* 
 INSTALAR:
 npm i just-debounce-it -E
+npm i gh-pages --save-dev
 */
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
@@ -13,6 +14,7 @@ function useSearch() {
     const [search, updateSearch] = useState("");
     const [error, setError] = useState(null);
     const isFirstInput = useRef(true);
+    const [hasSearched, setHasSearched] = useState(false);
 
     useEffect(() => {
         /* BANDERA: si es la primera vez que el usaurio entra a la web, el input no mostrará
@@ -23,27 +25,35 @@ function useSearch() {
             return;
         }
         if (search === "") {
-            setError("No se puede buscar una película vacía");
+            setError(
+                "No se puede buscar una película sin al menos una palabra."
+            );
             return;
         } else if (search.match(/^\d+$/)) {
-            setError("No se puede buscar una película con un número");
+            setError("No se puede buscar una película con un número.");
             return;
         } else if (search.length < 3) {
-            setError("La búsqueda debe tener al menos tres caracteres");
+            setError("La búsqueda debe tener al menos tres caracteres.");
             return;
         } else {
             setError(null);
         }
     }, [search]);
-    return { search, updateSearch, error };
+
+    const handleSearch = (newSearch) => {
+        updateSearch(newSearch);
+        if (newSearch.trim() !== "") {
+            setHasSearched(true);
+        }
+    };
+    return { search, updateSearch: handleSearch, error, hasSearched };
 }
 
 function App() {
     const [sort, setSort] = useState(false);
-    const { search, updateSearch, error } = useSearch();
+    const { search, updateSearch, error, hasSearched } = useSearch();
     const { movies, loading, getMovies } = useMovies({ search, sort });
 
-    console.log("En cada render ejecuto esto:");
     const debouncedGetMovies = useCallback(
         debounce((search) => {
             console.log("Search", search);
@@ -68,7 +78,7 @@ function App() {
     };
     return (
         <div className='page'>
-            <header>
+            <header className='searcher'>
                 <h1>Buscador de películas</h1>
                 <form className='form' onSubmit={handleSubmit}>
                     <input
@@ -93,7 +103,14 @@ function App() {
                 {error && <p style={{ color: "red" }}>{error}</p>}
             </header>
             <main>
-                {loading ? <p>Cargando...</p> : <Movies movies={movies} />}
+                {loading ? (
+                    <p>Cargando...</p>
+                ) : (
+                    <Movies
+                        movies={movies}
+                        hasSearched={hasSearched}
+                    />
+                )}
             </main>
         </div>
     );
